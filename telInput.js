@@ -40,11 +40,9 @@ window.telInput = (function(){
                             a.onkeydown = function(){
                                 var key = event.keyCode || event.charCode;
                                 if((key == 8 || key == 46) && a.value == ''){
-                                    console.log('cleared()');
                                     a.cleared();
                                     return true
-                                } else if(a.value != ''){
-                                    console.log('filled()');
+                                } else if(key != 8 && key != 46 && a.value != ''){
                                     a.filled();
                                     return true
                                 }

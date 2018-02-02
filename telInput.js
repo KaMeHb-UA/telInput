@@ -9,7 +9,7 @@ window.telInput = (function(){
     //*********************************************************************************************//
     return class{
         constructor(input, inputTpl, exportTpl){
-            if (!document.getElementById('telInputStyle')) document.getElementsByTagName('head')[0].appendChild((function(a){a.setAttribute('id','telInputStyle');a.innerHTML = '[_data-telInput-placed-to]{border:0;padding:0;margin:0;width:0.5em;font:inherit;background:transparent;text-align:center}[_data-telInput-placed-to]:focus{outline-width:0}';return a})(document.createElement('style')));
+            if (!document.getElementById('telInputStyle')) document.getElementsByTagName('head')[0].appendChild((function(a){a.setAttribute('id','telInputStyle');a.innerHTML = '[_data-telInput-placed-to]{border:0;padding:0;margin:0;width:0.6em;font:inherit;background:transparent;text-align:center;color:inherit}[_data-telInput-placed-to]:focus{outline-width:0}';return a})(document.createElement('style')));
             var div = document.createElement('div'), rect = input.getBoundingClientRect(), body = document.getElementsByTagName('body')[0], preg = /(\$\{\d+\})/, telInputId = guidGenerator();
             input.setAttribute('_data-telInput-id', telInputId);
             input.style.color = 'transparent';

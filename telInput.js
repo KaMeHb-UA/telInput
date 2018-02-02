@@ -10,7 +10,7 @@ window.telInput = (function(){
     return class{
         constructor(input, inputTpl, exportTpl){
             if (!document.getElementById('telInputStyle')) document.getElementsByTagName('head')[0].appendChild((function(a){a.setAttribute('id','telInputStyle');a.innerHTML = '[_data-telInput-placed-to]{border:0;padding:0;margin:0;width:0.6em;font:inherit;background:transparent;text-align:center;color:inherit}[_data-telInput-placed-to]:focus{outline-width:0}';return a})(document.createElement('style')));
-            var div = document.createElement('div'), rect = input.getBoundingClientRect(), body = document.getElementsByTagName('body')[0], preg = /(\$\{\d+\})/, telInputId = guidGenerator();
+            var div = document.createElement('div'), rect = input.getBoundingClientRect(), body = document.getElementsByTagName('body')[0], preg = /(\$\{\d+\})/, telInputId = guidGenerator(), firstNeededInput;
             input.setAttribute('_data-telInput-id', telInputId);
             input.style.color = 'transparent';
             input.onfocus = function(){
@@ -19,7 +19,7 @@ window.telInput = (function(){
                         if(a.nodeName.toLowerCase() == 'input' && a.value == '') a.focus();
                         else b(a.nextSibling || (a.focus(), false))
                     }
-                })(document.querySelector('[_data-telInput-placed-to][_data-telInput-id="' + telInputId + '"]'))
+                })(firstNeededInput)
             };
             // обрабатываем шаблоны
             var elements = [];
@@ -83,6 +83,11 @@ window.telInput = (function(){
             div.style.left = rect.left + 3;
             div.style.pointerEvents = 'none';
             body.appendChild(div);
+            firstNeededInput = document.querySelector('[_data-telInput-placed-to][_data-telInput-id="' + telInputId + '"]');
+            this.wrapper = firstNeededInput.parentNode
+        }
+        destroy(){
+            this.wrapper.parentNode.removeChild(this.wrapper)
         }
     }
 })();

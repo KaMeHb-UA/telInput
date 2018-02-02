@@ -1,8 +1,27 @@
 window.telInput = (function(){
+    //********************************From StackOverflow*******************************************//
+    function guidGenerator() {
+        var S4 = function() {
+           return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        };
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
+    //*********************************************************************************************//
     return class{
         constructor(input, inputTpl, exportTpl){
             if (!document.getElementById('telInputStyle')) document.getElementsByTagName('head')[0].appendChild((function(a){a.setAttribute('id','telInputStyle');a.innerHTML = '[_data-telInput-placed-to]{border:0;padding:0;margin:0;width:0.5em;font:inherit;background:transparent;text-align:center}[_data-telInput-placed-to]:focus{outline-width:0}';return a})(document.createElement('style')));
-            var div = document.createElement('div'), rect = input.getBoundingClientRect(), body = document.getElementsByTagName('body')[0], preg = /(\$\{\d+\})/;
+            var div = document.createElement('div'), rect = input.getBoundingClientRect(), body = document.getElementsByTagName('body')[0], preg = /(\$\{\d+\})/, telInputId = guidGenerator();
+            input.setAttribute('_data-telInput-id', telInputId);
+            console.log('constructor debug: %O', {
+                div: div,
+                rect: rect,
+                body: body,
+                preg: preg,
+                input: input,
+                inputTpl: inputTpl,
+                exportTpl: exportTpl,
+                telInputId: telInputId
+            });
             input.style.color = 'transparent';
             input.onfocus = function(){
                 (function b(a){
@@ -10,7 +29,7 @@ window.telInput = (function(){
                         if(a.nodeName.toLowerCase() == 'input' && a.value == '') a.focus();
                         else b(a.nextSibling || (a.focus(), false))
                     }
-                })(document.querySelector('[_data-telInput-placed-to]'))
+                })(document.querySelector('[_data-telInput-placed-to][_data-telInput-id="' + telInputId + '"]'))
             };
             // обрабатываем шаблоны
             var elements = [];
@@ -20,6 +39,7 @@ window.telInput = (function(){
                         elements.push((function(a){
                             var internalVal = '';
                             a.setAttribute('_data-telInput-placed-to', e);
+                            a.setAttribute('_data-telInput-id', telInputId);
                             a.setAttribute('maxlength', '1');
                             a.filled = function(){
                                 (function b(a){
@@ -52,7 +72,7 @@ window.telInput = (function(){
                                     // если изменено
                                     internalVal = a.value;
                                     input.value = exportTpl.replace((function(a){return new RegExp(preg.source,'g')})(preg), function(match){
-                                        return document.querySelector('[_data-telInput-placed-to="' + match + '"]').value;
+                                        return document.querySelector('[_data-telInput-placed-to="' + match + '"][_data-telInput-id="' + telInputId + '"]').value;
                                     });
                                     if (internalVal == '') a.cleared(); else a.filled();
                                 }

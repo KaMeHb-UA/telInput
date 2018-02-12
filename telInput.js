@@ -79,8 +79,8 @@ window.telInput = (function(){
             });
             // готово
             div.style.position = 'absolute';
-            div.style.top = rect.top + 1;
-            div.style.left = rect.left + 3;
+            div.style.top = (rect.top + 1) + 'px';
+            div.style.left = (rect.left + 3) + 'px';
             div.style.pointerEvents = 'none';
             body.appendChild(div);
             firstNeededInput = document.querySelector('[_data-telInput-placed-to][_data-telInput-id="' + telInputId + '"]');
